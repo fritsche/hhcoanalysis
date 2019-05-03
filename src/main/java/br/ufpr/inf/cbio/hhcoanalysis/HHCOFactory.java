@@ -16,21 +16,23 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis;
 
-import br.ufpr.inf.cbio.hhco.runner.Runner;
-import java.util.logging.Level;
-import org.uma.jmetal.util.JMetalLogger;
+import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
+import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCOConfiguration;
+import org.uma.jmetal.util.JMetalException;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
+public class HHCOFactory extends AlgorithmConfigurationFactory {
 
-    public static void main(String[] args) {
-        JMetalLogger.logger.setLevel(Level.CONFIG);
-        Runner runner = getRunner(parse(args));
-        runner.setFactory(new HHCOFactory());
-        runner.run();
-        runner.printResult();
+    @Override
+    public AlgorithmConfiguration getAlgorithmConfiguration(String algorithm) {
+        try {
+            return super.getAlgorithmConfiguration(algorithm);
+        } catch (JMetalException e) {
+            return new HHCOConfiguration(algorithm);
+        }
     }
 }

@@ -20,6 +20,7 @@ import br.ufpr.inf.cbio.hhco.algorithm.SPEA2SDE.EnvironmentalSelectionSDE;
 import br.ufpr.inf.cbio.hhco.algorithm.SPEA2SDE.StrengthRawFitnessSDE;
 import br.ufpr.inf.cbio.hhco.util.output.Utils;
 import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -95,7 +96,7 @@ public class Prune {
         /**
          * Create output path and file
          */
-        (new Utils(output)).prepareOutputDirectory();
+        (new Utils(Paths.get(output).getParent().toString())).prepareOutputDirectory();
         /**
          * Output solution set to file
          */

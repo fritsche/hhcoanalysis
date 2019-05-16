@@ -14,8 +14,7 @@ fi
 ms=(5 10 15)
 problems=(MaF01 MaF02 MaF03 MaF04 MaF05 MaF06 MaF07 MaF08 MaF09 MaF10 MaF11 MaF12 MaF13 MaF14 MaF15)
 methodology=MaFMethodology
-experiment=$1
-algorithms=($1)
+algorithm=$1
 runs=20
 replace=false # execute and replace if result exists
 jar=target/HHCOAnalysis-1.0-SNAPSHOT-jar-with-dependencies.jar
@@ -29,19 +28,19 @@ for m in "${ms[@]}"; do
 			# each objective, problem and independent run (id) uses a different seed
 			seed=${seeds[$seed_index]}
 			# different algorithms on the same problem instance uses the same seed
-			for algorithm in "${algorithms[@]}"; do
-				output="$dir/experiment/$methodology/$m/data/$algorithm/$problem/"
-				file="$output/FUN$id.tsv"
-				if [ ! -s $file ] || [ "$replace" = true ]; then
-					params="-P $output -M $methodology -a $algorithm -p $problem -m $m -id $id -s $seed"
-					echo "$javacommand $params" > job.log
-					cat job.log
-					batch < job.log
-				fi
-			done
+			output="$dir/experiment/$methodology/$m/data/$algorithm/$problem/"
+			file="$output/FUN$id.tsv"
+			if [ ! -s $file ] || [ "$replace" = true ]; then
+				params="-P $output -M $methodology -a $algorithm -p $problem -m $m -id $id -s $seed"
+				echo "$javacommand $params" > job.log
+				cat job.log
+				batch < job.log
+			fi
 			seed_index=$((seed_index+1))
 		done
 	done
 done
+
+rm job.log
 
 

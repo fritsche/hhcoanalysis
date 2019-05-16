@@ -4,8 +4,8 @@
 ## To clone this repo 
 
 ```bash
-# to clone this repo without the results folder
+# install git-lfs dependency
+sudo apt install git-lfs
+# clone repo as usual
 git clone git@github.com:fritsche/hhcoanalysis.git
-# to clone this repo including the results folder
-git clone --recurse-submodules git@github.com:fritsche/hhcoanalysis.git
 ```

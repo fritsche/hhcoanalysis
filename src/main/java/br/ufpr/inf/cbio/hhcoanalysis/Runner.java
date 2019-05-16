@@ -17,11 +17,13 @@
 package br.ufpr.inf.cbio.hhcoanalysis;
 
 import br.ufpr.inf.cbio.hhco.util.output.Utils;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.uma.jmetal.algorithm.multiobjective.moead.util.MOEADUtils;
 import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
-import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 
 /**
  *
@@ -44,9 +46,10 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
         Utils outputUtils = new Utils(folder);
         outputUtils.prepareOutputDirectory();
 
-        new SolutionListOutput(population).setSeparator("\t")
-                .setVarFileOutputContext(new DefaultFileOutputContext(folder + "VAR" + id + ".tsv"))
-                .setFunFileOutputContext(new DefaultFileOutputContext(folder + "FUN" + id + ".tsv"))
-                .print();
+        try {
+            new SolutionListOutput(population).printObjectivesToFile(folder + "FUN" + id + ".tsv");
+        } catch (IOException ex) {
+            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

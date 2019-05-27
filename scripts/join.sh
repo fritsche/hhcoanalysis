@@ -15,18 +15,18 @@ runs=20
 dir=$(pwd)
 ind=$2
 group=cec
-
+error=0
 for m in "${ms[@]}"; do
     for problem in "${problems[@]}"; do
         # remove old $ind file before computing
-        rm -f $output/$m/$group/$algorithm/$problem/$ind
+        rm -f $dir/experiment/$methodology/$m/$group/$algorithm/$problem/$ind
         for (( id = 0; id < $runs; id++ )); do
-            file=$output/$m/$group/$algorithm/$problem/FUN$id.tsv.$ind
+            file=$dir/experiment/$methodology/$m/$group/$algorithm/$problem/FUN$id.tsv.$ind
             if [ ! -s $file ]; then
                 (>&2 echo "File '$file' does not exist or is empty")
                 error=1
             else
-                cat $file >> $output/$m/$group/$algorithm/$problem/$ind
+                cat $file >> $dir/experiment/$methodology/$m/$group/$algorithm/$problem/$ind
             fi
         done
     done

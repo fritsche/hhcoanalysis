@@ -22,17 +22,19 @@ main=br.ufpr.inf.cbio.hhcoanalysis.Main
 javacommand="java -Duser.language=en -cp $jar -Xmx1g $main"
 dir=$(pwd)
 seed_index=0
+group=cec
+
 for m in "${ms[@]}"; do
 	for problem in "${problems[@]}"; do
 		for (( id = 0; id < $runs; id++ )); do
 			# each objective, problem and independent run (id) uses a different seed
 			seed=${seeds[$seed_index]}
 			# different algorithms on the same problem instance uses the same seed
-			output="$dir/experiment/$methodology/$m/data/$algorithm/$problem/"
+			output="$dir/experiment/$methodology/$m/$group/$algorithm/$problem/"
 			file="$output/FUN$id.tsv"
 			if [ ! -s $file ] || [ "$replace" = true ]; then
 				params="-P $output -M $methodology -a $algorithm -p $problem -m $m -id $id -s $seed"
-				echo "$javacommand $params" > job.log
+				echo "$javacommand $params 2>> $algorithm.$seed.log" > job.log
 				cat job.log
 				batch < job.log
 			fi

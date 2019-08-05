@@ -16,6 +16,11 @@
             <artifactId>hhco</artifactId>
             <version>799943e309</version>
         </dependency>
+        <dependency>
+	    <groupId>com.github.fritsche</groupId>
+	    <artifactId>Statistics</artifactId>
+	    <version>v1.2</version>
+	</dependency>
     </dependencies>
     <build>
         <plugins>      

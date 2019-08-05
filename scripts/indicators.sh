@@ -5,7 +5,7 @@ set -e
 source scripts/seeds.sh
 
 if [ "$#" -ne 2 ]; then
-	echo "Expected algorithm <name> and indicator [HV|IGD]"
+	echo "Expected: algorithm <name> and indicator [HV|IGD]"
 	exit 1
 fi
 
@@ -22,6 +22,11 @@ dir=$(pwd)
 ind=$2
 group=cec
 seed_index=0
+
+# HVApprox will always normalize disregard the value of this variable
+# We set norm to FALSE for IGD
+norm=FALSE 
+
 for problem in "${problems[@]}"; do
     for m in "${ms[@]}"; do
         for (( id = 0; id < $runs; id++ )); do
@@ -33,7 +38,7 @@ for problem in "${problems[@]}"; do
             if [ ! -s $file ] || [ "$replace" = true ]; then
                 rm -f $file
                 params="$ind $dir/experiment/referenceFronts/"$problem"_"$m".ref $base $norm $seed"
-                echo "$javacommand $params > $file" > job.log
+                echo "$javacommand $params > $file 2>> err.log" > job.log
 				cat job.log
 				batch < job.log
             fi

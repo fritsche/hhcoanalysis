@@ -3,7 +3,7 @@
 set -e
 
 if [ "$#" -ne 2 ]; then
-	echo "Expected algorithm <name> and indicator [HV|IGD]"
+	echo "Expected: algorithm <name> and indicator [HV|IGD]"
 	exit 1
 fi
 

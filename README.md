@@ -1,5 +1,4 @@
 # hhcoanalysis
-[Journal HH-CO: plano de trabalho](https://docs.google.com/document/d/1SOeRwdbGiuiMp4ZVg0HF2Y67EyV7X0lmJbQFGMVpsgE/edit?usp=sharing)
 
 ## To clone this repo 
 

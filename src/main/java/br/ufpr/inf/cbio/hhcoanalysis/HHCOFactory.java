@@ -18,7 +18,6 @@ package br.ufpr.inf.cbio.hhcoanalysis;
 
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
-import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCOConfiguration;
 import org.uma.jmetal.util.JMetalException;
 
 /**
@@ -32,7 +31,10 @@ public class HHCOFactory extends AlgorithmConfigurationFactory {
         try {
             return super.getAlgorithmConfiguration(algorithm);
         } catch (JMetalException e) {
-            return new HHCOConfiguration(algorithm);
+            if (algorithm.equals("HHCOEpsilon")) {
+                return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.EPSILON);
+            }
+            return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.R2);
         }
     }
 }

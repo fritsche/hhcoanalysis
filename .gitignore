@@ -8,6 +8,8 @@
 
 # Log file
 *.log
+*.log.*
+screenlog.*
 
 # BlueJ files
 *.ctxt
@@ -112,4 +114,6 @@ $RECYCLE.BIN/
 *.log
 *.log.lck
 
+# Netbeans
+/nbproject/
 # End of https://www.gitignore.io/api/java,linux,macos,maven,windows

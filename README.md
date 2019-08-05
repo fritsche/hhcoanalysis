@@ -2,9 +2,11 @@
 
 ## To clone this repo 
 
+### Without results folder
 ```bash
-# clone this repo without results folder
 git clone git@github.com:fritsche/hhcoanalysis.git
-# clone this repo including results folder
+```
+### Including results folder
+```bash
 git clone --recurse-submodules git@github.com:fritsche/hhcoanalysis.git
 ```

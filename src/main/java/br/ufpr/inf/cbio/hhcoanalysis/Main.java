@@ -16,8 +16,9 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis;
 
-import br.ufpr.inf.cbio.hhco.runner.Runner;
+import br.ufpr.inf.cbio.hhco.runner.methodology.MaFMethodology;
 import java.util.logging.Level;
+import org.apache.commons.cli.CommandLine;
 import org.uma.jmetal.util.JMetalLogger;
 
 /**
@@ -26,6 +27,50 @@ import org.uma.jmetal.util.JMetalLogger;
  */
 public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
 
+    public static Runner getRunner(CommandLine cmd) {
+        String problemName = "MaF02", aux;
+        int m = 5;
+        long seed = System.currentTimeMillis();
+        String experimentBaseDirectory = "experiment/";
+        String methodologyName = MaFMethodology.class.getSimpleName();
+        int id = 0;
+        String algorithmName = "HHCO";
+
+        Runner runner = new Runner();
+
+        if ((aux = cmd.getOptionValue("a")) != null) {
+            algorithmName = aux;
+        }
+        if ((aux = cmd.getOptionValue("p")) != null) {
+            problemName = aux;
+        }
+        if ((aux = cmd.getOptionValue("P")) != null) {
+            experimentBaseDirectory = aux;
+        }
+        if ((aux = cmd.getOptionValue("M")) != null) {
+            methodologyName = aux;
+        }
+        if ((aux = cmd.getOptionValue("m")) != null) {
+            m = Integer.parseInt(aux);
+        }
+        if ((aux = cmd.getOptionValue("id")) != null) {
+            id = Integer.parseInt(aux);
+        }
+        if ((aux = cmd.getOptionValue("s")) != null) {
+            seed = Long.parseLong(aux);
+        }
+
+        runner.setAlgorithmName(algorithmName);
+        runner.setProblemName(problemName);
+        runner.setObjectives(m);
+        runner.setExperimentBaseDirectory(experimentBaseDirectory);
+        runner.setId(id);
+        runner.setMethodologyName(methodologyName);
+        runner.setSeed(seed);
+        return runner;
+
+    }
+    
     public static void main(String[] args) {
         JMetalLogger.logger.setLevel(Level.CONFIG);
         Runner runner = getRunner(parse(args));

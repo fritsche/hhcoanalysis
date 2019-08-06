@@ -1,4 +1,5 @@
-# hhcoanalysis
+# hhcoanalysis [![](https://jitpack.io/v/fritsche/hhcoanalysis.svg)](https://jitpack.io/#fritsche/hhcoanalysis)
+
 
 ## To clone this repo 
 

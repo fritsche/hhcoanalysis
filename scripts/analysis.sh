@@ -2,8 +2,8 @@
 
 set -e
 
-if [ "$#" -lt 2 ]; then
-	echo "Expected: indicator [HV|IGD], <experiment>, and list of algorithms <Alg1 Alg2 ...>"
+if [ "$#" -lt 5 ]; then
+	echo "Expected: indicator [HV|IGD], <experiment>, <group> and list of algorithms <Alg1 Alg2 ...>"
 	exit 1
 fi
 
@@ -12,6 +12,7 @@ problems=(MaF01 MaF02 MaF03 MaF04 MaF05 MaF06 MaF07 MaF08 MaF09 MaF10 MaF11 MaF1
 methodology=MaFMethodology
 ind=$1; shift
 experiment=$1; shift
+group=$1; shift
 confidence=0.95
 algorithms=( "$@" )
  
@@ -25,10 +26,12 @@ echo $ind ${#algorithms[@]} ${algorithms[@]} ${#problems[@]} ${problems[@]} ${#m
 jar=target/HHCOAnalysis-1.0-SNAPSHOT-jar-with-dependencies.jar
 main=br.ufpr.inf.cbio.statistics.StatisticalTests
 javacommand="java -Duser.language=en -cp $jar -Xmx1g $main"
+command="$javacommand $ind ${#algorithms[@]} ${algorithms[@]} ${#problems[@]} ${problems[@]} ${#ms[@]} ${ms[@]} experiment/$methodology $experiment $group $confidence"
 
-eval "$javacommand $ind ${#algorithms[@]} ${algorithms[@]} ${#problems[@]} ${problems[@]} ${#ms[@]} ${ms[@]} experiment/$methodology $experiment $group $confidence"
+echo "$command"
+eval "$command"
 
-output=experiment/$methodology/cec/R/$experiment/KruskalTest$ind.tex
+output=experiment/$methodology/R/$experiment/KruskalTest$ind.tex
 
 echo "%$output" > $output
 echo "\documentclass[]{article}" >> $output
@@ -75,3 +78,8 @@ if (( ${#algorithms[@]} > 4 )); then
 fi
 
 echo "\end{document}" >> $output
+
+pdflatex $output
+Rscript experiment/$methodology/R/$experiment/$ind/friedmanplot.R
+
+echo "done."

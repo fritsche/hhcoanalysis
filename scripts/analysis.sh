@@ -26,7 +26,7 @@ jar=target/HHCOAnalysis-1.0-SNAPSHOT-jar-with-dependencies.jar
 main=br.ufpr.inf.cbio.statistics.StatisticalTests
 javacommand="java -Duser.language=en -cp $jar -Xmx1g $main"
 
-eval "$javacommand $ind ${#algorithms[@]} ${algorithms[@]} ${#problems[@]} ${problems[@]} ${#ms[@]} ${ms[@]} experiment/$methodology $experiment $confidence"
+eval "$javacommand $ind ${#algorithms[@]} ${algorithms[@]} ${#problems[@]} ${problems[@]} ${#ms[@]} ${ms[@]} experiment/$methodology $experiment $group $confidence"
 
 output=experiment/$methodology/cec/R/$experiment/KruskalTest$ind.tex
 

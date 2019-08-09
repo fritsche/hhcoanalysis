@@ -4,12 +4,12 @@ set -e
 
 source scripts/seeds.sh
 
-set_seeds
-
-if [ "$#" -ne 1 ]; then
-	echo "Expected algorithm name"
+if [ "$#" -ne 2 ]; then
+	echo "Expected algorithm <name> and <group>"
 	exit 1
 fi
+
+mvn package -DskipTests
 
 ms=(5 10 15)
 problems=(MaF01 MaF02 MaF03 MaF04 MaF05 MaF06 MaF07 MaF08 MaF09 MaF10 MaF11 MaF12 MaF13 MaF14 MaF15)
@@ -22,7 +22,7 @@ main=br.ufpr.inf.cbio.hhcoanalysis.Main
 javacommand="java -Duser.language=en -cp $jar -Xmx1g $main"
 dir=$(pwd)
 seed_index=0
-group=cec
+group=$2
 
 for m in "${ms[@]}"; do
 	for problem in "${problems[@]}"; do

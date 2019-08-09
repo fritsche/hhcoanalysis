@@ -29,20 +29,26 @@ import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
  */
 public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
 
+    private boolean prune = false;
+
+    public Runner(boolean prune) {
+        this.prune = prune;
+    }
+
     @Override
     public void printResult() {
         List population = SolutionListUtils.getNondominatedSolutions(algorithm.getResult());
 
-        // final population size of MaF
-        if (problem.getName().startsWith("MaF")) {
-            popSize = 240;
+        if (prune) {
+            // final population size of MaF
+            if (problem.getName().startsWith("MaF")) {
+                popSize = 240;
+            }
+            // prune output population size
+            if (population.size() > popSize) {
+                population = MOEADUtils.getSubsetOfEvenlyDistributedSolutions(population, popSize);
+            }
         }
-
-        // prune output population size
-        if (population.size() > popSize) {
-            population = MOEADUtils.getSubsetOfEvenlyDistributedSolutions(population, popSize);
-        }
-
         String folder = experimentBaseDirectory + "/";
 
         Utils outputUtils = new Utils(folder);

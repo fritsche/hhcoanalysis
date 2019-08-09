@@ -9,6 +9,13 @@ if [ "$#" -ne 2 ]; then
 	exit 1
 fi
 
+method="remote"
+if [ "$method" = "remote" ]; then
+    execute="sbatch -J $name.run $dir/scripts/addjob.sh" # for running on process queue
+else
+	execute="bash $dir/scripts/addbatch.sh" # for running locally
+fi
+
 mvn package -DskipTests
 
 ms=(5 10 15)
@@ -34,9 +41,7 @@ for m in "${ms[@]}"; do
 			file="$output/FUN$id.tsv"
 			if [ ! -s $file ] || [ "$replace" = true ]; then
 				params="-P $output -M $methodology -a $algorithm -p $problem -m $m -id $id -s $seed"
-				echo "$javacommand $params 2>> $algorithm.$seed.log" > job.log
-				cat job.log
-				batch < job.log
+				$execute "$javacommand $params 2>> $algorithm.$seed.log"
 			fi
 			seed_index=$((seed_index+1))
 		done

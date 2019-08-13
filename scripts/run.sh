@@ -10,12 +10,12 @@ if [ "$#" -ne 2 ]; then
 fi
 
 method="remote"
+dir=$(pwd)
 if [ "$method" = "remote" ]; then
-    execute="sbatch -J $name.run $dir/scripts/addjob.sh" # for running on process queue
+	execute="sbatch -J $name.run $dir/scripts/addjob.sh" # for running on process queue
 	dir="/home/gian/hhcoanalysis/"
 else
 	execute="bash $dir/scripts/addbatch.sh" # for running locally
-	dir=$(pwd)
 fi
 
 # mvn package -DskipTests

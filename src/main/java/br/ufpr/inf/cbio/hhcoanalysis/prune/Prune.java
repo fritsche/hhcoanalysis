@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.hhcoanalysis;
+package br.ufpr.inf.cbio.hhcoanalysis.prune;
 
 import br.ufpr.inf.cbio.hhco.algorithm.SPEA2SDE.EnvironmentalSelectionSDE;
 import br.ufpr.inf.cbio.hhco.algorithm.SPEA2SDE.StrengthRawFitnessSDE;
@@ -45,7 +45,7 @@ import org.uma.jmetal.util.front.util.FrontUtils;
 public class Prune {
 
     public enum Method {
-        MINMAX, SDE
+        MINMAX, SDE, LPNORM
     };
 
     private final Method method;
@@ -85,6 +85,9 @@ public class Prune {
                 case SDE:
                     (new StrengthRawFitnessSDE<>()).computeDensityEstimator(population);
                     pruned = (new EnvironmentalSelectionSDE<>(size)).execute(population);
+                    break;
+                case LPNORM:
+                    pruned = LpNormDistanceBasedPrune.getSubsetOfEvenlyDistributedSolutions(population, size);
                     break;
             }
         }
@@ -181,6 +184,8 @@ public class Prune {
                 method = Method.MINMAX;
             } else if (aux.equals(Method.SDE.toString())) {
                 method = Method.SDE;
+            } else if (aux.equals(Method.LPNORM.toString())) {
+                method = Method.LPNORM;
             } else {
                 invalidOptionError("m", options, cmd);
             }

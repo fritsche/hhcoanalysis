@@ -6,7 +6,7 @@ jdk:
 git:
   submodules: false
 
-install: mvn package
+install: mvn -B package
 
 script: "mvn cobertura:cobertura"
 

@@ -4,8 +4,8 @@ set -e
 
 source scripts/seeds.sh
 
-if [ "$#" -ne 2 ]; then
-	echo "Expected: algorithm <name> and indicator [HV|IGD]"
+if [ "$#" -ne 4 ]; then
+	echo "Expected: algorithm <name> and indicator [HV|IGD] <group> <replace[true|false]>"
 	exit 1
 fi
 
@@ -14,18 +14,18 @@ problems=(MaF01 MaF02 MaF03 MaF04 MaF05 MaF06 MaF07 MaF08 MaF09 MaF10 MaF11 MaF1
 methodology=MaFMethodology
 algorithm=$1
 runs=20
-replace=true # execute and replace if result exists
+replace=$4 # execute and replace if result exists
 jar=target/HHCOAnalysis-1.0-SNAPSHOT-jar-with-dependencies.jar
 main=br.ufpr.inf.cbio.hhco.runner.CommandLineIndicatorRunner
 javacommand="java -Duser.language=en -cp $jar -Xmx1g $main"
 dir=$(pwd)
 ind=$2
-group=cec
+group=$3
 seed_index=0
 
 # HVApprox will always normalize disregard the value of this variable
 # We set norm to FALSE for IGD
-norm=FALSE 
+norm=FALSE
 
 for problem in "${problems[@]}"; do
     for m in "${ms[@]}"; do

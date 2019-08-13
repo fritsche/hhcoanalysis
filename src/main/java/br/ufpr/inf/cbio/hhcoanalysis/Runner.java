@@ -16,12 +16,26 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis;
 
+import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCO;
+import br.ufpr.inf.cbio.hhco.problem.ProblemFactory;
+import br.ufpr.inf.cbio.hhco.runner.methodology.ArionMethodology;
+import br.ufpr.inf.cbio.hhco.runner.methodology.MaFMethodology;
+import br.ufpr.inf.cbio.hhco.runner.methodology.Methodology;
+import br.ufpr.inf.cbio.hhco.runner.methodology.NSGAIIIMethodology;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.observer.HHCOLogger;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.observer.SelectedMOEALogger;
 import br.ufpr.inf.cbio.hhco.util.output.Utils;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import org.uma.jmetal.algorithm.multiobjective.moead.util.MOEADUtils;
+import org.uma.jmetal.util.AlgorithmRunner;
+import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
+import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 /**
  *
@@ -58,6 +72,69 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
                 .setVarFileOutputContext(new DefaultFileOutputContext(folder + "VAR" + id + ".tsv"))
                 .setFunFileOutputContext(new DefaultFileOutputContext(folder + "FUN" + id + ".tsv"))
                 .print();
+    }
+
+    @Override
+    public void run() {
+
+        problem = ProblemFactory.getProblem(problemName, m);
+        JMetalLogger.logger.log(Level.CONFIG, "Problem: {0} with {1} objectives", new Object[]{problemName, m});
+
+        Methodology methodology = null;
+        if (methodologyName.equals(NSGAIIIMethodology.class.getSimpleName())) {
+            methodology = new NSGAIIIMethodology(problemName, m);
+        } else if (methodologyName.equals(MaFMethodology.class.getSimpleName())) {
+            methodology = new MaFMethodology(m, problem.getNumberOfVariables());
+        } else if (methodologyName.equals(ArionMethodology.class.getSimpleName())) {
+            methodology = new ArionMethodology(problemName);
+        } else {
+            throw new JMetalException("There is no configuration for " + methodologyName + " methodology.");
+        }
+        JMetalLogger.logger.log(Level.CONFIG, "Methodology: {0}", methodologyName);
+
+        int maxFitnessevaluations = methodology.getMaxFitnessEvaluations();
+        JMetalLogger.logger.log(Level.CONFIG, "Max Fitness Evaluations: {0}", maxFitnessevaluations);
+        popSize = methodology.getPopulationSize();
+
+        // set seed
+        JMetalRandom.getInstance().setSeed(seed);
+        JMetalLogger.logger.log(Level.CONFIG, "Seed: {0}", seed);
+
+        algorithm = factory
+                .getAlgorithmConfiguration(algorithmName)
+                .configure(popSize, maxFitnessevaluations, problem);
+
+        JMetalLogger.logger.log(Level.CONFIG, "Algorithm: {0}", algorithmName);
+
+        String outputfolder = experimentBaseDirectory + "/"
+                + methodologyName + "/"
+                + m
+                + "/output/"
+                + algorithmName + "/"
+                + problemName + "/";
+        
+        // create loggers
+        List<HHCOLogger> loggers = new ArrayList<>();
+        // loggers.add(new MOEASFIRLogger(outputfolder, "moeasfir." + id));
+        loggers.add(new SelectedMOEALogger(outputfolder, "selected." + id));
+
+        HHCO hhco = (HHCO) algorithm;
+        // append loggers to algorithm
+        loggers.forEach((logger) -> {
+            hhco.addObserver(logger);
+        });
+
+        AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(hhco)
+                .execute();
+
+        // close loggers (write to file)
+        loggers.forEach((logger) -> {
+            logger.close();
+        });
+
+        long computingTime = algorithmRunner.getComputingTime();
+        JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+
     }
 
 }

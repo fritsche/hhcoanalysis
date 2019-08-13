@@ -2,8 +2,8 @@
 
 set -e
 
-if [ "$#" -ne 2 ]; then
-	echo "Expected: algorithm <name> and indicator [HV|IGD]"
+if [ "$#" -ne 3 ]; then
+	echo "Expected: algorithm <name> and indicator [HV|IGD] and <group>"
 	exit 1
 fi
 
@@ -14,7 +14,7 @@ algorithm=$1
 runs=20
 dir=$(pwd)
 ind=$2
-group=cec
+group=$3
 error=0
 for m in "${ms[@]}"; do
     for problem in "${problems[@]}"; do

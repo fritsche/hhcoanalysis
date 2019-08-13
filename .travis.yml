@@ -8,7 +8,7 @@ git:
 
 install: mvn -q package
 
-script: "mvn cobertura:cobertura"
+script: "mvn -q cobertura:cobertura"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

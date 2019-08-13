@@ -3,7 +3,6 @@ language: java
 install: mvn -q compile
 
 jdk:
-  - oraclejdk8
   - openjdk8
 
 git:

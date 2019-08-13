@@ -14,7 +14,7 @@ problems=(MaF01 MaF02 MaF03 MaF04 MaF05 MaF06 MaF07 MaF08 MaF09 MaF10 MaF11 MaF1
 methodology=MaFMethodology
 algorithm=$1
 runs=20
-replace=false # execute and replace if result exists
+replace=true # execute and replace if result exists
 jar=target/HHCOAnalysis-1.0-SNAPSHOT-jar-with-dependencies.jar
 main=br.ufpr.inf.cbio.hhco.runner.CommandLineIndicatorRunner
 javacommand="java -Duser.language=en -cp $jar -Xmx1g $main"

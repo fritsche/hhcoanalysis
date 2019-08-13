@@ -12,11 +12,13 @@ fi
 method="remote"
 if [ "$method" = "remote" ]; then
     execute="sbatch -J $name.run $dir/scripts/addjob.sh" # for running on process queue
+	dir="/home/gian/hhcoanalysis/"
 else
 	execute="bash $dir/scripts/addbatch.sh" # for running locally
+	dir=$(pwd)
 fi
 
-mvn package -DskipTests
+# mvn package -DskipTests
 
 ms=(5 10 15)
 problems=(MaF01 MaF02 MaF03 MaF04 MaF05 MaF06 MaF07 MaF08 MaF09 MaF10 MaF11 MaF12 MaF13 MaF14 MaF15)
@@ -27,7 +29,6 @@ replace=false # execute and replace if result exists
 jar=target/HHCOAnalysis-1.0-SNAPSHOT-jar-with-dependencies.jar
 main=br.ufpr.inf.cbio.hhcoanalysis.Main
 javacommand="java -Duser.language=en -cp $jar -Xmx1g $main"
-dir=$(pwd)
 seed_index=0
 group=$2
 

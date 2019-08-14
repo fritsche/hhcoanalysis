@@ -106,12 +106,7 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
 
         JMetalLogger.logger.log(Level.CONFIG, "Algorithm: {0}", algorithmName);
 
-        String outputfolder = experimentBaseDirectory + "/"
-                + methodologyName + "/"
-                + m
-                + "/output/"
-                + algorithmName + "/"
-                + problemName + "/";
+        String outputfolder = experimentBaseDirectory + "/output/";
         
         // create loggers
         List<HHCOLogger> loggers = new ArrayList<>();

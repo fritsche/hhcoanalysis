@@ -44,6 +44,7 @@ import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
 
     private boolean prune = false;
+    private String analysis = "OFF";
 
     public Runner(boolean prune) {
         this.prune = prune;
@@ -106,30 +107,40 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
 
         JMetalLogger.logger.log(Level.CONFIG, "Algorithm: {0}", algorithmName);
 
-        String outputfolder = experimentBaseDirectory + "/output/";
-        
-        // create loggers
-        List<HHCOLogger> loggers = new ArrayList<>();
-        // loggers.add(new MOEASFIRLogger(outputfolder, "moeasfir." + id));
-        loggers.add(new SelectedMOEALogger(outputfolder, "selected." + id));
+        if (analysis.equals("ON")) {
+            // create loggers
+            List<HHCOLogger> loggers = new ArrayList<>();
+            String outputfolder = experimentBaseDirectory + "/output/";
+            // loggers.add(new MOEASFIRLogger(outputfolder, "moeasfir." + id));
+            loggers.add(new SelectedMOEALogger(outputfolder, "selected." + id));
 
-        HHCO hhco = (HHCO) algorithm;
-        // append loggers to algorithm
-        loggers.forEach((logger) -> {
-            hhco.addObserver(logger);
-        });
+            HHCO hhco = (HHCO) algorithm;
+            // append loggers to algorithm
+            loggers.forEach((logger) -> {
+                hhco.addObserver(logger);
+            });
 
-        AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(hhco)
-                .execute();
+            AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(hhco)
+                    .execute();
 
-        // close loggers (write to file)
-        loggers.forEach((logger) -> {
-            logger.close();
-        });
+            // close loggers (write to file)
+            loggers.forEach((logger) -> {
+                logger.close();
+            });
 
-        long computingTime = algorithmRunner.getComputingTime();
-        JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+            long computingTime = algorithmRunner.getComputingTime();
+            JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+        } else {
+            AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
+                    .execute();
+            long computingTime = algorithmRunner.getComputingTime();
+            JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+        }
 
+    }
+
+    void toggleAnalysis(String analysis) {
+        this.analysis = analysis;
     }
 
 }

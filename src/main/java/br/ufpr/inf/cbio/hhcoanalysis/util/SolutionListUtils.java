@@ -24,32 +24,32 @@ import org.uma.jmetal.solution.Solution;
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class SolutionListUtils {
- 
-    public static List<Solution<?>> removeRepeatedSolutions(List<? extends Solution<?>> solutions){
-            
+public class SolutionListUtils extends org.uma.jmetal.util.SolutionListUtils {
+
+    public static List<Solution<?>> removeRepeatedSolutions(List<? extends Solution<?>> solutions) {
+
         List<Solution<?>> newPopulation = new ArrayList<>();
-        
+
         for (int i = 0; i < solutions.size(); i++) {
-            
+
             Solution<?> s = solutions.get(i);
 
             if (!contains(newPopulation, s)) {
                 newPopulation.add(s.copy());
             }
         }
-            
+
         return newPopulation;
     }
-    
+
     public static boolean contains(List<? extends Solution<?>> population, Solution s1) {
-        
+
         if (population == null || s1 == null) {
             throw new IllegalArgumentException("The list of solutions or the solution cannot be null");
         }
 
         for (int i = 0; i < population.size(); i++) {
-            
+
             Solution s2 = population.get(i);
 
             if (isEqual(s1, s2)) {
@@ -59,9 +59,9 @@ public class SolutionListUtils {
 
         return false;
     }
-    
+
     public static boolean isEqual(Solution s1, Solution s2) {
-        
+
         if (s1 == null || s2 == null) {
             throw new IllegalArgumentException("Soluton s1 and s2 cannot be null");
         }

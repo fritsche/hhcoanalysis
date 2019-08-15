@@ -18,16 +18,10 @@ package br.ufpr.inf.cbio.hhcoanalysis.util;
 
 import java.util.Arrays;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.uma.jmetal.problem.BinaryProblem;
 import org.uma.jmetal.problem.multiobjective.dtlz.DTLZ1;
 import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.solution.impl.DefaultBinarySolution;
 
 /**
  *
@@ -50,6 +44,16 @@ public class SolutionListUtilsTest {
         }
 
         return s;
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void sholdThrowIllegalArgumentExceptionWhenSolution1IsNull() {
+        SolutionListUtils.isEqual(null, createSolution(0.1, 0.2, 0.3));
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void sholdThrowIllegalArgumentExceptionWhenSolution2IsNull() {
+        SolutionListUtils.isEqual(createSolution(0.1, 0.2, 0.3), null);
     }
     
     @Test

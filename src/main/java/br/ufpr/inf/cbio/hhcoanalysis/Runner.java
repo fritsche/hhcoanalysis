@@ -25,6 +25,7 @@ import br.ufpr.inf.cbio.hhco.runner.methodology.NSGAIIIMethodology;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.observer.HHCOLogger;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.observer.SelectedMOEALogger;
 import br.ufpr.inf.cbio.hhco.util.output.Utils;
+import br.ufpr.inf.cbio.hhcoanalysis.util.SolutionListUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,7 +33,6 @@ import org.uma.jmetal.algorithm.multiobjective.moead.util.MOEADUtils;
 import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
-import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
@@ -52,8 +52,8 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
 
     @Override
     public void printResult() {
-        List population = SolutionListUtils.getNondominatedSolutions(algorithm.getResult());
-        
+        List population = SolutionListUtils.removeRepeatedSolutions(SolutionListUtils.getNondominatedSolutions(algorithm.getResult()));
+
         if (prune) {
             // final population size of MaF
             if (problem.getName().startsWith("MaF")) {

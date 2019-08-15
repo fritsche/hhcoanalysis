@@ -53,7 +53,7 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
     @Override
     public void printResult() {
         List population = SolutionListUtils.getNondominatedSolutions(algorithm.getResult());
-
+        
         if (prune) {
             // final population size of MaF
             if (problem.getName().startsWith("MaF")) {

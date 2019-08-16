@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis;
 
+import br.ufpr.inf.cbio.hhcoanalysis.util.SolutionListUtils;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCO;
 import br.ufpr.inf.cbio.hhco.problem.ProblemFactory;
 import br.ufpr.inf.cbio.hhco.runner.methodology.ArionMethodology;
@@ -25,7 +26,6 @@ import br.ufpr.inf.cbio.hhco.runner.methodology.NSGAIIIMethodology;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.observer.HHCOLogger;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.observer.SelectedMOEALogger;
 import br.ufpr.inf.cbio.hhco.util.output.Utils;
-import br.ufpr.inf.cbio.hhcoanalysis.util.SolutionListUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

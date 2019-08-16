@@ -14,25 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.hhcoanalysis;
+package br.ufpr.inf.cbio.hhcoanalysis.fir;
 
-import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
-import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
-import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHCORandomConfiguration;
+import br.ufpr.inf.cbio.hhco.metrics.fir.FitnessImprovementRateCalculator;
+import java.util.List;
+import org.uma.jmetal.solution.Solution;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class HHCOFactory extends AlgorithmConfigurationFactory {
+public class VoidFIR implements FitnessImprovementRateCalculator<Solution<?>>{
 
     @Override
-    public AlgorithmConfiguration getAlgorithmConfiguration(String algorithm) {
-        if (algorithm.equals("HHCOEpsilon")) {
-            return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.EPSILON);
-        } else if (algorithm.equals("HHCORandom")) {
-            return new HHCORandomConfiguration();
-        }
-        return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.R2);
+    public double computeFitnessImprovementRate(List<Solution<?>> parents, List<Solution<?>> offspring) {
+        return Double.NaN;
     }
+    
 }

@@ -18,7 +18,7 @@ else
 	execute="bash $dir/scripts/addbatch.sh" # for running locally
 fi
 
-# mvn package -DskipTests
+mvn package -DskipTests
 
 ms=(15)
 problems=(MaF01 MaF02 MaF03 MaF04 MaF05 MaF06 MaF07 MaF08 MaF09 MaF10 MaF11 MaF12 MaF13 MaF14 MaF15)

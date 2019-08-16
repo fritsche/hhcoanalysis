@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis;
 
+import br.ufpr.inf.cbio.hhcoanalysis.fir.EpsilonFIR;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCOConfiguration;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.ArgMaxSelection;
 import br.ufpr.inf.cbio.hhco.metrics.fir.R2TchebycheffFIR;

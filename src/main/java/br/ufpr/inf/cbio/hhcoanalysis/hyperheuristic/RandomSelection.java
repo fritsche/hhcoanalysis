@@ -14,25 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.hhcoanalysis;
+package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic;
 
-import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
-import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
-import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHCORandomConfiguration;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.SelectionFunction;
+import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
+ * @param <T>
  */
-public class HHCOFactory extends AlgorithmConfigurationFactory {
+public class RandomSelection<T> extends SelectionFunction<T> {
+
+    private final JMetalRandom random;
+
+    public RandomSelection() {
+        this.random = JMetalRandom.getInstance();
+    }
 
     @Override
-    public AlgorithmConfiguration getAlgorithmConfiguration(String algorithm) {
-        if (algorithm.equals("HHCOEpsilon")) {
-            return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.EPSILON);
-        } else if (algorithm.equals("HHCORandom")) {
-            return new HHCORandomConfiguration();
-        }
-        return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.R2);
+    public void init() {
+
     }
+
+    @Override
+    public T getNext(int it) {
+        s = random.nextInt(0, lowlevelheuristics.size() - 1);
+        return lowlevelheuristics.get(s);
+    }
+
+    @Override
+    public void creditAssignment(double reward) {
+
+    }
+
 }

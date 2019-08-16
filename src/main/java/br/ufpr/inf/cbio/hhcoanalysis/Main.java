@@ -51,7 +51,7 @@ public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
             options.addOption(Option.builder("s").longOpt("seed").hasArg().argName("seed")
                     .desc("set the seed for JMetalRandom, default System.currentTimeMillis()").build());
             options.addOption(Option.builder("a").longOpt("algorithm").hasArg().argName("algorithm")
-                    .desc("set the algorithm to be executed: [HHCOR2|HHCOEpsilon]").build());
+                    .desc("set the algorithm to be executed: [HHCOR2|HHCOEpsilon|HHCORandom]").build());
             options.addOption(Option.builder("p").longOpt("problem").hasArg().argName("problem")
                     .desc("set the problem instance: DTLZ[1-7], WFG[1-9], MinusDTLZ[1-7], MinusWFG[1-9], MaF[01-15]; default is WFG1."
                             + "<methodology> must be set accordingly.").build());

@@ -26,23 +26,23 @@ import org.uma.jmetal.solution.Solution;
  */
 public class SolutionListUtils extends org.uma.jmetal.util.SolutionListUtils {
 
-    public static List<Solution<?>> removeRepeatedSolutions(List<? extends Solution<?>> solutions) {
+    public static <S extends Solution<?>> List<S> removeRepeatedSolutions(List<S> solutions) {
 
-        List<Solution<?>> newPopulation = new ArrayList<>();
+        List<S> newPopulation = new ArrayList<>();
 
         for (int i = 0; i < solutions.size(); i++) {
 
-            Solution<?> s = solutions.get(i);
+            S s = solutions.get(i);
 
             if (!contains(newPopulation, s)) {
-                newPopulation.add(s.copy());
+                newPopulation.add((S) s.copy());
             }
         }
 
         return newPopulation;
     }
 
-    public static boolean contains(List<? extends Solution<?>> population, Solution s1) {
+    public static<S extends Solution<?>> boolean contains(List<S> population, Solution s1) {
 
         if (population == null || s1 == null) {
             throw new IllegalArgumentException("The list of solutions or the solution cannot be null");

@@ -22,8 +22,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
+import org.uma.jmetal.util.pseudorandom.impl.JavaRandomGenerator;
 
 /**
  *
@@ -36,6 +36,7 @@ public class RandomSelectionTest {
 
     @BeforeClass
     public static void setUpClass() {
+        JMetalRandom.getInstance().setRandomGenerator(new JavaRandomGenerator());
     }
 
     @AfterClass

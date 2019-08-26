@@ -17,7 +17,9 @@
 package br.ufpr.inf.cbio.hhcoanalysis.problem;
 
 import br.ufpr.inf.cbio.hhco.util.output.OutputWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -56,7 +58,8 @@ public class HypervolumeImprovement extends AbstractDoubleProblem {
         this.problem = problem;
         numberOfObjectives = problem.getNumberOfObjectives();
         try {
-            Front front = new ArrayFront(getClass().getResource("/referenceFronts/" + problem.getName() + "_" + problem.getNumberOfObjectives() + ".ref").getPath());
+            String resource = "/referenceFronts/" + problem.getName() + "_" + problem.getNumberOfObjectives() + ".ref";        
+            Front front = new ArrayFront(resource);
             updateReferencePoint(front);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(HypervolumeImprovement.class.getName()).log(Level.SEVERE, "Reference front not found for problem " + problem.getName() + " m=" + problem.getNumberOfObjectives() + ".", ex);

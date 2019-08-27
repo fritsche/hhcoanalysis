@@ -27,7 +27,7 @@ algorithm=$1
 runs=20
 replace=false # execute and replace if result exists
 jar=target/HHCOAnalysis-1.0-SNAPSHOT-jar-with-dependencies.jar
-main=br.ufpr.inf.cbio.hhcoanalysis.Main
+main=br.ufpr.inf.cbio.hhcoanalysis.runner.Main
 javacommand="java -Duser.language=en -cp $jar -Xmx1g $main"
 seed_index=0
 group=$2

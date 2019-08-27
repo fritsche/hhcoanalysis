@@ -41,7 +41,7 @@ for m in "${ms[@]}"; do
 			output="$dir/experiment/$methodology/$m/$group/$algorithm/$problem/"
 			file="$output/FUN$id.tsv"
 			if [ ! -s $file ] || [ "$replace" = true ]; then
-				params="-P $output -M $methodology -a $algorithm -p $problem -m $m -id $id -s $seed"
+				params="-P $output -M $methodology -A ON -a $algorithm -p $problem -m $m -id $id -s $seed"
 				$execute "$javacommand $params 2>> $algorithm.$seed.log"
 			fi
 			seed_index=$((seed_index+1))

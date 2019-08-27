@@ -1,4 +1,4 @@
-
+*.log*
 *.pdf
 
 # Created by https://www.gitignore.io/api/r,java,latex,linux,macos,maven,windows,eclipse,netbeans,intellij+all

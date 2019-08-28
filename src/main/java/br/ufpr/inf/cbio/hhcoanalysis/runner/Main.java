@@ -125,7 +125,7 @@ public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
     }
 
     public static void main(String[] args) {
-        JMetalLogger.logger.setLevel(Level.CONFIG);
+        JMetalLogger.logger.setLevel(Level.INFO);
         Runner runner = getRunner(parse(args));
         runner.setFactory(new HHCOFactory());
         runner.run();

@@ -16,7 +16,6 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.runner;
 
-import br.ufpr.inf.cbio.hhcoanalysis.runner.GenericHHCOConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHCORandomConfiguration;

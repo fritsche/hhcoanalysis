@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.runner;
 
+import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
 import br.ufpr.inf.cbio.hhcoanalysis.util.SolutionListUtils;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCO;
 import br.ufpr.inf.cbio.hhco.problem.ProblemFactory;
@@ -108,37 +109,51 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
         JMetalRandom.getInstance().setSeed(seed);
         JMetalLogger.logger.log(Level.CONFIG, "Seed: {0}", seed);
 
-        algorithm = factory
-                .getAlgorithmConfiguration(algorithmName)
-                .configure(popSize, maxFitnessevaluations, problem);
+        if (algorithmName.startsWith("HHCO")) {
 
-        JMetalLogger.logger.log(Level.CONFIG, "Algorithm: {0}", algorithmName);
+            factory = new HHCOFactory();
 
-        if (analysis.equals("ON")) {
-            // create loggers
-            List<HHCOLogger> loggers = new ArrayList<>();
-            String outputfolder = experimentBaseDirectory + "/output/";
-            // loggers.add(new MOEASFIRLogger(outputfolder, "moeasfir." + id));
-            loggers.add(new SelectedMOEALogger(outputfolder, "selected." + id));
+            algorithm = factory
+                    .getAlgorithmConfiguration(algorithmName)
+                    .configure(popSize, maxFitnessevaluations, problem);
 
-            HHCO hhco = (HHCO) algorithm;
-            // append loggers to algorithm
-            loggers.forEach((logger) -> {
-                hhco.addObserver(logger);
-            });
+            JMetalLogger.logger.log(Level.CONFIG, "Algorithm: {0}", algorithmName);
 
-            AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(hhco)
-                    .execute();
+            if (analysis.equals("ON")) {
+                // create loggers
+                List<HHCOLogger> loggers = new ArrayList<>();
+                String outputfolder = experimentBaseDirectory + "/output/";
+                // loggers.add(new MOEASFIRLogger(outputfolder, "moeasfir." + id));
+                loggers.add(new SelectedMOEALogger(outputfolder, "selected." + id));
 
-            // close loggers (write to file)
-            loggers.forEach((logger) -> {
-                logger.close();
-            });
-            ow.close();
+                HHCO hhco = (HHCO) algorithm;
+                // append loggers to algorithm
+                loggers.forEach((logger) -> {
+                    hhco.addObserver(logger);
+                });
 
-            long computingTime = algorithmRunner.getComputingTime();
-            JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+                AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(hhco)
+                        .execute();
+
+                // close loggers (write to file)
+                loggers.forEach((logger) -> {
+                    logger.close();
+                });
+                ow.close();
+
+                long computingTime = algorithmRunner.getComputingTime();
+                JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+            } else {
+                AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
+                        .execute();
+                long computingTime = algorithmRunner.getComputingTime();
+                JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+            }
         } else {
+            factory = new AlgorithmConfigurationFactory();
+            algorithm = factory
+                    .getAlgorithmConfiguration(algorithmName)
+                    .configure(popSize, maxFitnessevaluations, problem);
             AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
                     .execute();
             long computingTime = algorithmRunner.getComputingTime();

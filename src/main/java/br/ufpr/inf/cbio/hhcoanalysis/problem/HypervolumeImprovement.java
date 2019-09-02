@@ -17,9 +17,7 @@
 package br.ufpr.inf.cbio.hhcoanalysis.problem;
 
 import br.ufpr.inf.cbio.hhco.util.output.OutputWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

@@ -25,7 +25,9 @@ import br.ufpr.inf.cbio.hhco.runner.methodology.MaFMethodology;
 import br.ufpr.inf.cbio.hhco.runner.methodology.Methodology;
 import br.ufpr.inf.cbio.hhco.runner.methodology.NSGAIIIMethodology;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.observer.HHCOLogger;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.HHLA.observer.HHLALogger;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.observer.SelectedMOEALogger;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.HHLA.HHLA;
 import br.ufpr.inf.cbio.hhco.util.output.OutputWriter;
 import br.ufpr.inf.cbio.hhco.util.output.Utils;
 import br.ufpr.inf.cbio.hhcoanalysis.problem.HypervolumeImprovement;
@@ -149,6 +151,47 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
                 long computingTime = algorithmRunner.getComputingTime();
                 JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
             }
+
+        } else if (algorithmName.startsWith("HHLA")) {
+
+            factory = new AlgorithmConfigurationFactory();
+            algorithm = factory
+                    .getAlgorithmConfiguration(algorithmName)
+                    .configure(popSize, maxFitnessevaluations, problem);
+
+            JMetalLogger.logger.log(Level.CONFIG, "Algorithm: {0}", algorithmName);
+
+            if (analysis.equals("ON")) {
+                // create loggers
+                List<HHLALogger> loggers = new ArrayList<>();
+                String outputfolder = experimentBaseDirectory + "/output/";
+                // loggers.add(new MOEASFIRLogger(outputfolder, "moeasfir." + id));
+                loggers.add(new br.ufpr.inf.cbio.hhco.hyperheuristic.HHLA.observer.SelectedMOEALogger(outputfolder, "selected." + id));
+
+                HHLA hhla = (HHLA) algorithm;
+                // append loggers to algorithm
+                loggers.forEach((logger) -> {
+                    hhla.addObserver(logger);
+                });
+
+                AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(hhla)
+                        .execute();
+
+                // close loggers (write to file)
+                loggers.forEach((logger) -> {
+                    logger.close();
+                });
+                ow.close();
+
+                long computingTime = algorithmRunner.getComputingTime();
+                JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+            } else {
+                AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
+                        .execute();
+                long computingTime = algorithmRunner.getComputingTime();
+                JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+            }
+
         } else {
             factory = new AlgorithmConfigurationFactory();
             algorithm = factory

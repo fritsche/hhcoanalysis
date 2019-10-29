@@ -30,6 +30,7 @@ import org.uma.jmetal.util.front.imp.ArrayFront;
 import org.uma.jmetal.util.point.Point;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
+import org.uma.jmetal.util.solutionattribute.impl.OverallConstraintViolation;
 
 /**
  *
@@ -56,7 +57,7 @@ public class HypervolumeImprovement extends AbstractDoubleProblem {
         this.problem = problem;
         numberOfObjectives = problem.getNumberOfObjectives();
         try {
-            String resource = "/referenceFronts/" + problem.getName() + "_" + problem.getNumberOfObjectives() + ".ref";        
+            String resource = "/referenceFronts/" + problem.getName() + "_" + problem.getNumberOfObjectives() + ".ref";
             Front front = new ArrayFront(resource);
             updateReferencePoint(front);
         } catch (FileNotFoundException ex) {
@@ -87,17 +88,24 @@ public class HypervolumeImprovement extends AbstractDoubleProblem {
     }
 
     public double updateHV(DoubleSolution solution) {
-        // normalize
-        Point point = new ArrayPoint(numberOfObjectives);
-        for (int i = 0; i < numberOfObjectives; i++) {
-            point.setValue(i, solution.getObjective(i) / (offset * referencePoint.getValue(i)));
-        }
-        // remove samples dominated by the solution
-        Iterator<Point> i = samples.iterator();
-        while (i.hasNext()) {
-            Point p = i.next();
-            if (solutionDominatesSample(point, p)) {
-                i.remove();
+        OverallConstraintViolation<DoubleSolution> violation = new OverallConstraintViolation();
+        Double attribute = violation.getAttribute(solution);
+        
+        // if solution has no attribute constraint
+        // or attribute constraint equals to zero
+        if (attribute == null || attribute == 0) {
+            // normalize
+            Point point = new ArrayPoint(numberOfObjectives);
+            for (int i = 0; i < numberOfObjectives; i++) {
+                point.setValue(i, solution.getObjective(i) / (offset * referencePoint.getValue(i)));
+            }
+            // remove samples dominated by the solution
+            Iterator<Point> i = samples.iterator();
+            while (i.hasNext()) {
+                Point p = i.next();
+                if (solutionDominatesSample(point, p)) {
+                    i.remove();
+                }
             }
         }
         return (sampleSize - samples.size()) / (double) sampleSize;

@@ -87,25 +87,18 @@ public class HypervolumeImprovement extends AbstractDoubleProblem {
         ow.writeLine(Double.toString(hv));
     }
 
-    public double updateHV(DoubleSolution solution) {
-        OverallConstraintViolation<DoubleSolution> violation = new OverallConstraintViolation();
-        Double attribute = violation.getAttribute(solution);
-        
-        // if solution has no attribute constraint
-        // or attribute constraint equals to zero
-        if (attribute == null || attribute == 0) {
-            // normalize
-            Point point = new ArrayPoint(numberOfObjectives);
-            for (int i = 0; i < numberOfObjectives; i++) {
-                point.setValue(i, solution.getObjective(i) / (offset * referencePoint.getValue(i)));
-            }
-            // remove samples dominated by the solution
-            Iterator<Point> i = samples.iterator();
-            while (i.hasNext()) {
-                Point p = i.next();
-                if (solutionDominatesSample(point, p)) {
-                    i.remove();
-                }
+  public double updateHV(DoubleSolution solution) {
+        // normalize
+        Point point = new ArrayPoint(numberOfObjectives);
+        for (int i = 0; i < numberOfObjectives; i++) {
+            point.setValue(i, solution.getObjective(i) / (offset * referencePoint.getValue(i)));
+        }
+        // remove samples dominated by the solution
+        Iterator<Point> i = samples.iterator();
+        while (i.hasNext()) {
+            Point p = i.next();
+            if (solutionDominatesSample(point, p)) {
+                i.remove();
             }
         }
         return (sampleSize - samples.size()) / (double) sampleSize;

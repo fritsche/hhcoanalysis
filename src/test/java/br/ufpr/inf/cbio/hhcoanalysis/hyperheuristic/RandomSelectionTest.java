@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic;
 
+import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCORandom.RandomSelection;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

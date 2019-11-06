@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.problem;
 
+import br.ufpr.inf.cbio.hhco.problem.HypervolumeImprovement;
 import br.ufpr.inf.cbio.hhco.problem.MaF.MaF01;
 import br.ufpr.inf.cbio.hhco.utils.MockRandomNumberGenerator;
 import br.ufpr.inf.cbio.hhcoanalysis.util.SolutionListUtilsTest;

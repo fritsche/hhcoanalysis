@@ -14,7 +14,7 @@
         <dependency>
             <groupId>com.github.fritsche</groupId>
             <artifactId>hhco</artifactId>
-            <version>24b6a2959e</version>
+            <version>16372e2dcc</version>
         </dependency>
         <dependency>
             <groupId>com.github.fritsche</groupId>

@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.github.fritsche</groupId>
             <artifactId>Statistics</artifactId>
-            <version>v1.3.1</version>
+            <version>528a023049</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

@@ -14,6 +14,7 @@ ind=$1; shift
 experiment=$1; shift
 group=$1; shift
 confidence=0.95
+printSTD=FALSE
 algorithms=( "$@" )
  
 if [ "${#algorithms[@]}" -lt "2" ] ; then
@@ -26,7 +27,7 @@ echo $ind ${#algorithms[@]} ${algorithms[@]} ${#problems[@]} ${problems[@]} ${#m
 jar=target/HHCOAnalysis-1.0-SNAPSHOT-jar-with-dependencies.jar
 main=br.ufpr.inf.cbio.statistics.StatisticalTests
 javacommand="java -Duser.language=en -cp $jar -Xmx1g $main"
-command="$javacommand $ind ${#algorithms[@]} ${algorithms[@]} ${#problems[@]} ${problems[@]} ${#ms[@]} ${ms[@]} experiment/$methodology $experiment $group $confidence"
+command="$javacommand $ind ${#algorithms[@]} ${algorithms[@]} ${#problems[@]} ${problems[@]} ${#ms[@]} ${ms[@]} experiment/$methodology $experiment $group $confidence $printSTD"
 
 echo "$command"
 eval "$command"

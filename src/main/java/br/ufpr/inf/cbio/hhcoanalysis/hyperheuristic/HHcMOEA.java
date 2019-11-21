@@ -86,15 +86,15 @@ public class HHcMOEA<S extends Solution<?>> extends Observable implements Algori
             selected.doIteration();
 
             // copy the solutions generatedy by selected
-            List<S> offspring = new ArrayList<>();
-            for (S s : selected.getOffspring()) {
-                offspring.add((S) s.copy());
+            List<S> newpop = new ArrayList<>();
+            for (S s : selected.getPopulation()) {
+                newpop.add((S) s.copy());
                 // count evaluations used by selected
                 evaluations++;
             }
 
             // extract metrics
-            setFir(calculator.computeFitnessImprovementRate(parents, offspring));
+            setFir(calculator.computeFitnessImprovementRate(parents, newpop));
 
             // compute reward
             selection.creditAssignment(getFir());
@@ -106,7 +106,7 @@ public class HHcMOEA<S extends Solution<?>> extends Observable implements Algori
             for (CooperativeAlgorithm<S> neighbor : algorithms) {
                 if (neighbor != selected) {
                     List<S> migrants = new ArrayList<>();
-                    for (S s : offspring) {
+                    for (S s : newpop) {
                         migrants.add((S) s.copy());
                     }
                     neighbor.receive(migrants);

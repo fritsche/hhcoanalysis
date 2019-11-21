@@ -53,6 +53,11 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
     private String analysis = "OFF";
 
     public Runner(boolean prune) {
+        this(prune, new HHCOFactory());
+    }
+
+    public Runner(boolean prune, AlgorithmConfigurationFactory factory) {
+        this.factory = factory;
         this.prune = prune;
     }
 
@@ -154,7 +159,6 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
 
         } else if (algorithmName.startsWith("HHLA")) {
 
-            factory = new AlgorithmConfigurationFactory();
             algorithm = factory
                     .getAlgorithmConfiguration(algorithmName)
                     .configure(popSize, maxFitnessevaluations, problem);
@@ -193,7 +197,6 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
             }
 
         } else {
-            factory = new AlgorithmConfigurationFactory();
             algorithm = factory
                     .getAlgorithmConfiguration(algorithmName)
                     .configure(popSize, maxFitnessevaluations, problem);

@@ -27,10 +27,20 @@ import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEAConfiguration;
  */
 public class HHCOAnalysisFactory extends AlgorithmConfigurationFactory {
 
+    private final boolean analysis;
+    private final String id;
+    private final String outputFolder;
+    
+    public HHCOAnalysisFactory(boolean analysis, String id, String outputFolder) {
+        this.analysis = analysis;
+        this.id = id;
+        this.outputFolder = outputFolder;
+    }
+    
     @Override
     public AlgorithmConfiguration getAlgorithmConfiguration(String algorithm) {
         if (algorithm.equals(HHcMOEA.class.getSimpleName())) {
-            return new HHcMOEAConfiguration(algorithm);
+            return new HHcMOEAConfiguration(algorithm, analysis, id, outputFolder);
         }
         return super.getAlgorithmConfiguration(algorithm);
     }

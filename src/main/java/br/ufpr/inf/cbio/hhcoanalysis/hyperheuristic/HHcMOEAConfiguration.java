@@ -46,9 +46,15 @@ public class HHcMOEAConfiguration<S extends Solution> implements AlgorithmConfig
     protected FitnessImprovementRateCalculator fir;
     protected Problem problem;
     protected int popSize;
+    private final boolean analysis;
+    private String id;
+    private String outputfolder;
 
-    public HHcMOEAConfiguration(String name) {
+    public HHcMOEAConfiguration(String name, boolean analysis, String id, String outputfolder) {
         this.name = name;
+        this.analysis = analysis;
+        this.id = id;
+        this.outputfolder = outputfolder;
     }
 
     @Override
@@ -102,8 +108,14 @@ public class HHcMOEAConfiguration<S extends Solution> implements AlgorithmConfig
                         .addAlgorithm(new COHypEConfiguration().configure(popSize, maxFitnessEvaluations, problem));
         }
 
-        return builder.setName(name).setSelection(selection).setFir(fir).
+        HHcMOEA hhcmoea = builder.setName(name).setSelection(selection).setFir(fir).
                 setMaxEvaluations(maxFitnessEvaluations).setPopulationSize(popSize).build();
+        
+        if (analysis) {
+            hhcmoea.addObserver(new SelectedMOEALogger(outputfolder, "selected." + id));
+        }
+        
+        return hhcmoea;
     }
 
     @Override

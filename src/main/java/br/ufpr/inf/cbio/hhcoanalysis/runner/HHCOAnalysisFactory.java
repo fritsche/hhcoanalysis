@@ -20,6 +20,8 @@ import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA.HHcMOEA;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA.HHcMOEAConfiguration;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.Baseline;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.BaselineConfiguration;
 
 /**
  *
@@ -41,6 +43,8 @@ public class HHCOAnalysisFactory extends AlgorithmConfigurationFactory {
     public AlgorithmConfiguration getAlgorithmConfiguration(String algorithm) {
         if (algorithm.equals(HHcMOEA.class.getSimpleName())) {
             return new HHcMOEAConfiguration(algorithm, analysis, id, outputFolder);
+        } else if (algorithm.equals(Baseline.class.getSimpleName())) {
+            return new BaselineConfiguration(algorithm, analysis, id, outputFolder);
         }
         return super.getAlgorithmConfiguration(algorithm);
     }

@@ -1,4 +1,4 @@
-package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic;
+package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA;
 
 import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.SelectionFunction;

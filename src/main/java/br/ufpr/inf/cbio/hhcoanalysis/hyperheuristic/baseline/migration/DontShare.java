@@ -14,25 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic;
+package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration;
 
 import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
 import java.util.List;
+import org.uma.jmetal.solution.Solution;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
+ * @param <S>
  */
-public class SelectedMOEALogger extends HHcMOEALogger {
-
-    public SelectedMOEALogger(String folder, String file) {
-        super(folder, file);
-    }
+public class DontShare<S extends Solution<?>> implements MigrationStrategy<S> {
 
     @Override
-    public void update(HHcMOEA hhcmoea) {
-        CooperativeAlgorithm selected = hhcmoea.getSelected();
-        List<CooperativeAlgorithm> algorithms = hhcmoea.getAlgorithms();
-        ow.writeLine(Integer.toString(algorithms.indexOf(selected)));
+    public void migrate(List<CooperativeAlgorithm<S>> algorithms, CooperativeAlgorithm<S> selected) {
+
     }
+
 }

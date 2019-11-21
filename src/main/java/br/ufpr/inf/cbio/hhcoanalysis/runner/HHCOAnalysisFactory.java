@@ -18,8 +18,8 @@ package br.ufpr.inf.cbio.hhcoanalysis.runner;
 
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
-import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA;
-import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEAConfiguration;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA.HHcMOEA;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA.HHcMOEAConfiguration;
 
 /**
  *

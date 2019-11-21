@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic;
+package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA;
 
 import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.SelectionFunction;
@@ -36,16 +36,16 @@ import org.uma.jmetal.util.SolutionListUtils;
  */
 public class HHcMOEA<S extends Solution<?>> extends Observable implements Algorithm<List<S>> {
 
-    private int maxEvaluations;
+    public int maxEvaluations;
     private Problem<S> problem;
     protected final int populationSize;
     protected final String name;
     protected final SelectionFunction<CooperativeAlgorithm> selection;
     protected final FitnessImprovementRateCalculator calculator;
-    private int evaluations;
-    private List<CooperativeAlgorithm<S>> algorithms;
+    public int evaluations;
+    public List<CooperativeAlgorithm<S>> algorithms;
     protected double fir;
-    private CooperativeAlgorithm<S> selected;
+    public CooperativeAlgorithm<S> selected;
 
     public HHcMOEA(List<CooperativeAlgorithm<S>> algorithms, int populationSize, int maxEvaluations,
             Problem problem, String name, SelectionFunction<CooperativeAlgorithm> selection,
@@ -113,6 +113,9 @@ public class HHcMOEA<S extends Solution<?>> extends Observable implements Algori
                 }
             }
         }
+
+        setChanged();
+        notifyObservers();
 
     }
 

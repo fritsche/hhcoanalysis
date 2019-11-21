@@ -14,39 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic;
+package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation;
 
-import br.ufpr.inf.cbio.hhco.util.output.OutputWriter;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.logging.Level;
-import org.uma.jmetal.util.JMetalLogger;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
+import br.ufpr.inf.cbio.hhco.metrics.fir.FitnessImprovementRateCalculator;
+import java.util.ArrayList;
+import java.util.List;
+import org.uma.jmetal.solution.Solution;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
+ * @param <S>
  */
-public abstract class HHcMOEALogger implements Observer {
-
-    protected final OutputWriter ow;
-
-    public HHcMOEALogger(String folder, String file) {
-        JMetalLogger.logger.log(Level.CONFIG, "{0}: ENABLED", this.getClass().getSimpleName());
-        ow = new OutputWriter(folder, file);
-    }
+public class NewvsOldPopulation<S extends Solution<?>> implements EvaluationStrategy<S> {
 
     @Override
-    public void update(Observable o, Object arg) {
-        update((HHcMOEA) o);
+    public double evaluate(FitnessImprovementRateCalculator calculator, CooperativeAlgorithm<S> selected, List<S> parents) {
+        List<S> newpop = new ArrayList<>();
+        for (S s : selected.getPopulation()) {
+            newpop.add((S) s.copy());
+        }
+        return calculator.computeFitnessImprovementRate(parents, newpop);
     }
-
-    public abstract void update(HHcMOEA cchmoea);
-
-    /**
-     * Close buffer and write to file
-     */
-    public void close() {
-        ow.close();
-    }
-
 }

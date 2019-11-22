@@ -31,11 +31,10 @@ import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.CastroRoulette;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.SelectionFunction;
 import br.ufpr.inf.cbio.hhco.metrics.fir.FitnessImprovementRateCalculator;
 import br.ufpr.inf.cbio.hhco.metrics.fir.R2TchebycheffFIR;
-import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA.HHcMOEA;
-import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA.HHcMOEABuilder;
-import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA.HHcMOEAConfiguration;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.HHcMOEA.SelectedMOEALogger;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.NewvsOldPopulation;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.DontShare;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.ShareOffspring;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.SharePopulation;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.Solution;
@@ -53,8 +52,8 @@ public class BaselineConfiguration<S extends Solution<?>> implements AlgorithmCo
     protected Problem problem;
     protected int popSize;
     private final boolean analysis;
-    private String id;
-    private String outputfolder;
+    private final String id;
+    private final String outputfolder;
 
     public BaselineConfiguration(String name, boolean analysis, String id, String outputfolder) {
         this.name = name;
@@ -117,12 +116,23 @@ public class BaselineConfiguration<S extends Solution<?>> implements AlgorithmCo
         builder = (BaselineBuilder) builder.setName(name).setSelection(selection).setFir(fir).
                 setMaxEvaluations(maxFitnessEvaluations).setPopulationSize(popSize);
 
-        Baseline baseline = builder.setEvaluation(new NewvsOldPopulation()).setMigration(new SharePopulation()).build();
+        builder.setEvaluation(new NewvsOldPopulation())
+                .setMigration(new SharePopulation());
+
+        if (name.equals(SharePopulation.class.getSimpleName())) {
+            builder.setMigration(new SharePopulation());
+        } else if (name.equals(ShareOffspring.class.getSimpleName())) {
+            builder.setMigration(new ShareOffspring());
+        } else if (name.equals(DontShare.class.getSimpleName())) {
+            builder.setMigration(new DontShare());
+        }
+
+        Baseline baseline = builder.build();
 
         if (analysis) {
             baseline.addObserver(new SelectedMOEALogger(outputfolder, "selected." + id));
         }
-
+        
         return baseline;
     }
 

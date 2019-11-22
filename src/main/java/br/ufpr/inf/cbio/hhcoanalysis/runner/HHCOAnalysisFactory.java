@@ -43,10 +43,9 @@ public class HHCOAnalysisFactory extends AlgorithmConfigurationFactory {
     public AlgorithmConfiguration getAlgorithmConfiguration(String algorithm) {
         if (algorithm.equals(HHcMOEA.class.getSimpleName())) {
             return new HHcMOEAConfiguration(algorithm, analysis, id, outputFolder);
-        } else if (algorithm.equals(Baseline.class.getSimpleName())) {
+        } else {
             return new BaselineConfiguration(algorithm, analysis, id, outputFolder);
         }
-        return super.getAlgorithmConfiguration(algorithm);
     }
 
 }

@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.prune;
 
+import br.ufpr.inf.cbio.hhco.prune.LpNormDistanceBasedPrune;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;

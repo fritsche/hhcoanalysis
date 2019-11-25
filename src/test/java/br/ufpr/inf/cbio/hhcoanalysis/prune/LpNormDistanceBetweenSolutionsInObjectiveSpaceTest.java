@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.prune;
 
+import br.ufpr.inf.cbio.hhco.prune.LpNormDistanceBetweenSolutionsInObjectiveSpace;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

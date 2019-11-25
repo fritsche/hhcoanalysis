@@ -16,6 +16,7 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.util;
 
+import br.ufpr.inf.cbio.hhco.util.SolutionListUtils;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;

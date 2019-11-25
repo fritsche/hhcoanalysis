@@ -20,7 +20,7 @@ fi
 
 mvn package -DskipTests
 
-ms=(10 15)
+ms=(5 10 15)
 problems=(MaF01 MaF02 MaF03 MaF04 MaF05 MaF06 MaF07 MaF08 MaF09 MaF10 MaF11 MaF12 MaF13 MaF14 MaF15)
 methodology=MaFMethodology
 algorithm=$1

@@ -33,13 +33,13 @@ import org.uma.jmetal.util.JMetalLogger;
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
 public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
-    
+
     public static CommandLine parse(String[] args) {
-        
+
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
         Options options = new Options();
-        
+
         try {
             options.addOption(Option.builder("h").longOpt("help").desc("print this message and exits.").build());
             options.addOption(Option.builder("P").longOpt("output-path").hasArg().argName("path")
@@ -74,7 +74,7 @@ public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
         }
         return null;
     }
-    
+
     public static Runner getRunner(CommandLine cmd) {
         String problemName = "MaF02", aux;
         int m = 5;
@@ -84,9 +84,9 @@ public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
         int id = 0;
         String algorithmName = "HHCO";
         String analysis = "OFF";
-        
+
         Runner runner = new Runner(false, new HHCOAnalysisFactory(analysis.equals("ON"), experimentBaseDirectory + "/output/", Integer.toString(id)));
-        
+
         if ((aux = cmd.getOptionValue("a")) != null) {
             algorithmName = aux;
         }
@@ -110,8 +110,9 @@ public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
         }
         if ((aux = cmd.getOptionValue("s")) != null) {
             seed = Long.parseLong(aux);
+            Logger.getLogger(Main.class.getName()).log(Level.INFO, "Seed: {0}", seed);
         }
-        
+
         runner.setAlgorithmName(algorithmName);
         runner.setProblemName(problemName);
         runner.setObjectives(m);
@@ -121,9 +122,9 @@ public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
         runner.setSeed(seed);
         runner.toggleAnalysis(analysis);
         return runner;
-        
+
     }
-    
+
     public static void main(String[] args) {
         JMetalLogger.logger.setLevel(Level.INFO);
         Runner runner = getRunner(parse(args));

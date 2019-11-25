@@ -36,6 +36,8 @@ import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.NewvsOld
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.DontShare;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.ShareOffspring;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.SharePopulation;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.Solution;
 
@@ -132,7 +134,11 @@ public class BaselineConfiguration<S extends Solution<?>> implements AlgorithmCo
         if (analysis) {
             baseline.addObserver(new SelectedMOEALogger(outputfolder, "selected." + id));
         }
-        
+
+        logInfo("Migration: " + builder.getMigration().getClass().getSimpleName());
+        logInfo("Problem: " + problem.getName());
+        logInfo("Number of objectives: " + problem.getNumberOfObjectives());
+
         return baseline;
     }
 
@@ -140,6 +146,10 @@ public class BaselineConfiguration<S extends Solution<?>> implements AlgorithmCo
     public void setup() {
         this.selection = new CastroRoulette<>();
         this.fir = new R2TchebycheffFIR(problem, popSize);
+    }
+
+    private void logInfo(String info) {
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, info);
     }
 
 }

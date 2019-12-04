@@ -28,11 +28,15 @@ public class HHCOFactory extends AlgorithmConfigurationFactory {
 
     @Override
     public AlgorithmConfiguration getAlgorithmConfiguration(String algorithm) {
-        if (algorithm.equals("HHCOEpsilon")) {
-            return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.EPSILON);
-        } else if (algorithm.equals("HHCORandom")) {
-            return new HHCORandomConfiguration();
+        switch (algorithm) {
+            case "HHCORandom":
+                return new HHCORandomConfiguration();
+            case "HHCOEpsilon":
+                return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.EPSILON, GenericHHCOConfiguration.SelectionMethod.GREEDY);
+            case "Roulette":
+                return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.R2, GenericHHCOConfiguration.SelectionMethod.ROULETTE);
+            default:
+                return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.R2, GenericHHCOConfiguration.SelectionMethod.GREEDY);
         }
-        return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.R2);
     }
 }

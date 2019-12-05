@@ -85,7 +85,7 @@ public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
         String algorithmName = "HHCO";
         String analysis = "OFF";
 
-        Runner runner = new Runner(false, new HHCOAnalysisFactory(analysis.equals("ON"), experimentBaseDirectory + "/output/", Integer.toString(id)));
+        Runner runner = new Runner(false, new HHCOFactory());
 
         if ((aux = cmd.getOptionValue("a")) != null) {
             algorithmName = aux;
@@ -126,7 +126,7 @@ public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
     }
 
     public static void main(String[] args) {
-        JMetalLogger.logger.setLevel(Level.INFO);
+        JMetalLogger.logger.setLevel(Level.ALL);
         Runner runner = getRunner(parse(args));
         runner.run();
         runner.printResult();

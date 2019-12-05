@@ -120,13 +120,14 @@ public class GenericHHCOConfiguration extends HHCOConfiguration<Solution> {
 
     @Override
     public void setup() {
-        
+
         if (selectionMethod.equals(SelectionMethod.ROULETTE)) {
             this.selection = new CastroRoulette<>();
         } else {
             this.selection = new ArgMaxSelection<>();
         }
-        
+        JMetalLogger.logger.log(Level.CONFIG, "Selection: {0}", selection.getClass().getSimpleName());
+
         switch (firtype) {
             case R2:
                 this.fir = new R2TchebycheffFIR(problem, popSize);
@@ -135,8 +136,8 @@ public class GenericHHCOConfiguration extends HHCOConfiguration<Solution> {
                 this.fir = new EpsilonFIR(problem);
                 break;
         }
-        
         JMetalLogger.logger.log(Level.CONFIG, "FIR: {0}", fir.getClass().getSimpleName());
+
     }
 
 }

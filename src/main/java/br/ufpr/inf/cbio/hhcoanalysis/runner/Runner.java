@@ -30,6 +30,8 @@ import br.ufpr.inf.cbio.hhco.problem.HypervolumeImprovement;
 import br.ufpr.inf.cbio.hhco.util.SolutionListUtils;
 import br.ufpr.inf.cbio.hhco.util.output.OutputWriter;
 import br.ufpr.inf.cbio.hhco.util.output.Utils;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.Baseline;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.logger.BaselineLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -111,7 +113,7 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
         JMetalLogger.logger.log(Level.CONFIG, "Seed: {0}", seed);
 
         factory = new HHCOFactory(problem, popSize);
-        
+
         if (algorithmName.startsWith("HHCO")) {
 
             algorithm = factory
@@ -191,13 +193,34 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
             }
 
         } else {
+
             algorithm = factory
                     .getAlgorithmConfiguration(algorithmName)
                     .configure(popSize, maxFitnessevaluations, problem);
-            AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
+
+            // create loggers
+            List<BaselineLogger> loggers = new ArrayList<>();
+            String outputfolder = experimentBaseDirectory + "/output/";
+            loggers.add(new br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.logger.SelectedMOEALogger(outputfolder, "selected." + id));
+
+            Baseline baseline = (Baseline) algorithm;
+            // append loggers to algorithm
+            loggers.forEach((logger) -> {
+                baseline.addObserver(logger);
+            });
+
+            AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(baseline)
                     .execute();
+
+            // close loggers (write to file)
+            loggers.forEach((logger) -> {
+                logger.close();
+            });
+            ow.close();
+
             long computingTime = algorithmRunner.getComputingTime();
             JMetalLogger.logger.log(Level.INFO, "Total execution time: {0}ms", computingTime);
+
         }
 
     }

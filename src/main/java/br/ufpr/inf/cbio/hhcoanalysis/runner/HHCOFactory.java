@@ -19,7 +19,6 @@ package br.ufpr.inf.cbio.hhcoanalysis.runner;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.BaselineConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
-import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCORandom.HHCORandomConfiguration;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.ArgMaxSelection;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.CastroRoulette;
@@ -29,6 +28,9 @@ import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvalSele
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluateAll;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluationStrategy;
 import org.uma.jmetal.problem.Problem;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.MigrationStrategy;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.ShareOffspring;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.SharePopulation;
 
 /**
  *
@@ -47,21 +49,30 @@ public class HHCOFactory extends AlgorithmConfigurationFactory {
     @Override
     public AlgorithmConfiguration getAlgorithmConfiguration(String algorithm) {
         EvaluationStrategy evaluationStrategy;
+        MigrationStrategy migrationStrategy;
         switch (algorithm) {
             case "HHCORandom":
                 return new HHCORandomConfiguration();
             case "HHCOEpsilon":
                 evaluationStrategy = new EvaluateAll(new ArgMaxSelection(), new EpsilonFIR(problem));
-                return new BaselineConfiguration(algorithm, evaluationStrategy);
+                migrationStrategy = new ShareOffspring();
+                return new BaselineConfiguration(algorithm, evaluationStrategy, migrationStrategy);
             case "Roulette":
                 evaluationStrategy = new EvaluateAll(new CastroRoulette(), new R2TchebycheffFIR(problem, populationSize));
-                return new BaselineConfiguration(algorithm, evaluationStrategy);
+                migrationStrategy = new ShareOffspring();
+                return new BaselineConfiguration(algorithm, evaluationStrategy, migrationStrategy);
             case "EvalSelected":
                 evaluationStrategy = new EvalSelected(new ArgMaxSelection(), new R2TchebycheffFIR(problem, populationSize));
-                return new BaselineConfiguration(algorithm, evaluationStrategy);
+                migrationStrategy = new ShareOffspring();
+                return new BaselineConfiguration(algorithm, evaluationStrategy, migrationStrategy);
+            case "SharePopulation":
+                evaluationStrategy = new EvaluateAll(new ArgMaxSelection(), new R2TchebycheffFIR(problem, populationSize));
+                migrationStrategy = new SharePopulation();
+                return new BaselineConfiguration(algorithm, evaluationStrategy, migrationStrategy);
             default:
                 evaluationStrategy = new EvaluateAll(new ArgMaxSelection(), new R2TchebycheffFIR(problem, populationSize));
-                return new BaselineConfiguration(algorithm, evaluationStrategy);
+                migrationStrategy = new ShareOffspring();
+                return new BaselineConfiguration(algorithm, evaluationStrategy, migrationStrategy);
         }
     }
 }

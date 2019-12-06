@@ -17,7 +17,6 @@
 package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline;
 
 import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
-import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.SelectionFunction;
 import java.util.ArrayList;
 import java.util.List;
 import org.uma.jmetal.problem.Problem;
@@ -25,6 +24,7 @@ import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.AlgorithmBuilder;
 import br.ufpr.inf.cbio.hhco.metrics.fir.FitnessImprovementRateCalculator;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluationStrategy;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.MigrationStrategy;
 
 /**
  *
@@ -39,8 +39,9 @@ public class BaselineBuilder<S extends Solution<?>> implements AlgorithmBuilder<
     protected final Problem problem;
     protected String name;
     protected FitnessImprovementRateCalculator fir;
-    protected  EvaluationStrategy evaluationStrategy;
-    
+    protected EvaluationStrategy evaluationStrategy;
+    private MigrationStrategy migrationStrategy;
+
     public BaselineBuilder(Problem problem) {
         this.problem = problem;
         name = "Baseline"; // default name
@@ -108,9 +109,14 @@ public class BaselineBuilder<S extends Solution<?>> implements AlgorithmBuilder<
         return this;
     }
 
+    public BaselineBuilder setMigrationStrategy(MigrationStrategy migrationStrategy) {
+        this.migrationStrategy = migrationStrategy;
+        return this;
+    }
+
     @Override
     public Baseline build() {
-        return new Baseline<>(name, algorithms, populationSize, maxEvaluations, evaluationStrategy);
+        return new Baseline<>(name, algorithms, populationSize, maxEvaluations, evaluationStrategy, migrationStrategy);
     }
 
 }

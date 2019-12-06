@@ -16,6 +16,8 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline;
 
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.MigrationStrategy;
+
 import br.ufpr.inf.cbio.hhco.algorithm.HypE.COHypEConfiguration;
 import br.ufpr.inf.cbio.hhco.algorithm.MOEAD.COMOEADConfiguration;
 import br.ufpr.inf.cbio.hhco.algorithm.MOEADD.COMOEADDConfiguration;
@@ -27,16 +29,9 @@ import br.ufpr.inf.cbio.hhco.algorithm.SPEA2SDE.COSPEA2SDEConfiguration;
 import br.ufpr.inf.cbio.hhco.algorithm.ThetaDEA.COThetaDEAConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
-import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.ArgMaxSelection;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.SelectionFunction;
-import br.ufpr.inf.cbio.hhco.metrics.fir.EpsilonFIR;
-import br.ufpr.inf.cbio.hhco.metrics.fir.FitnessImprovementRateCalculator;
-import br.ufpr.inf.cbio.hhco.metrics.fir.R2TchebycheffFIR;
-import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluateAll;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluationStrategy;
-import java.util.logging.Level;
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.util.JMetalLogger;
 
 /**
  *
@@ -49,10 +44,12 @@ public class BaselineConfiguration implements AlgorithmConfiguration<Baseline> {
     protected Problem problem;
     protected int popSize;
     protected EvaluationStrategy evaluationStrategy;
+    protected MigrationStrategy migrationStrategy;
 
-    public BaselineConfiguration(String name, EvaluationStrategy evaluationStrategy) {
+    public BaselineConfiguration(String name, EvaluationStrategy evaluationStrategy, MigrationStrategy migrationStrategy) {
         this.name = name;
         this.evaluationStrategy = evaluationStrategy;
+        this.migrationStrategy = migrationStrategy;
     }
 
     @Override
@@ -106,7 +103,7 @@ public class BaselineConfiguration implements AlgorithmConfiguration<Baseline> {
                         .addAlgorithm(new COHypEConfiguration().configure(popSize, maxFitnessEvaluations, problem));
         }
 
-        return builder.setName(name).setEvaluationStrategy(evaluationStrategy)
+        return builder.setName(name).setEvaluationStrategy(evaluationStrategy).setMigrationStrategy(migrationStrategy)
                 .setMaxEvaluations(maxFitnessEvaluations).setPopulationSize(popSize).build();
     }
 

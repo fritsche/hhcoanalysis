@@ -19,6 +19,7 @@ package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.SelectionFunction;
 import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluationStrategy;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.migration.MigrationStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -40,18 +41,21 @@ public class Baseline<S extends Solution<?>> extends Observable implements Algor
     protected final int populationSize;
     protected final int maxEvaluations;
     protected final EvaluationStrategy evaluationStrategy;
+    protected final MigrationStrategy migrationStrategy;
 
     protected int evaluations;
     protected CooperativeAlgorithm<S> selected;
 
-    public Baseline(String name, List<CooperativeAlgorithm<S>> algorithms, int populationSize, int maxEvaluations, EvaluationStrategy evaluationStrategy) {
+    public Baseline(String name, List<CooperativeAlgorithm<S>> algorithms, int populationSize, int maxEvaluations, EvaluationStrategy evaluationStrategy, MigrationStrategy migrationStrategy) {
         this.name = name;
         this.algorithms = algorithms;
         this.populationSize = populationSize;
         this.maxEvaluations = maxEvaluations;
         this.evaluationStrategy = evaluationStrategy;
+        this.migrationStrategy = migrationStrategy;
         JMetalLogger.logger.log(Level.CONFIG, "Selection Function: {0}", evaluationStrategy.getSelection().getClass().getSimpleName());
         JMetalLogger.logger.log(Level.CONFIG, "Evaluation Strategy: {0}", evaluationStrategy.getClass().getSimpleName());
+        JMetalLogger.logger.log(Level.CONFIG, "Migration Strategy: {0}", migrationStrategy.getClass().getSimpleName());
     }
 
     @Override

@@ -16,7 +16,6 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.runner;
 
-import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCO;
 import br.ufpr.inf.cbio.hhco.problem.ProblemFactory;
 import br.ufpr.inf.cbio.hhco.runner.methodology.ArionMethodology;
@@ -53,11 +52,6 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
     private String analysis = "OFF";
 
     public Runner(boolean prune) {
-        this(prune, new HHCOFactory());
-    }
-
-    public Runner(boolean prune, AlgorithmConfigurationFactory factory) {
-        this.factory = factory;
         this.prune = prune;
     }
 
@@ -116,9 +110,9 @@ public class Runner extends br.ufpr.inf.cbio.hhco.runner.Runner {
         JMetalRandom.getInstance().setSeed(seed);
         JMetalLogger.logger.log(Level.CONFIG, "Seed: {0}", seed);
 
+        factory = new HHCOFactory(problem, popSize);
+        
         if (algorithmName.startsWith("HHCO")) {
-
-            factory = new HHCOFactory();
 
             algorithm = factory
                     .getAlgorithmConfiguration(algorithmName)

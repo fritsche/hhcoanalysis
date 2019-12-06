@@ -85,7 +85,7 @@ public class Main extends br.ufpr.inf.cbio.hhco.runner.Main {
         String algorithmName = "HHCO";
         String analysis = "OFF";
 
-        Runner runner = new Runner(false, new HHCOFactory());
+        Runner runner = new Runner(false);
 
         if ((aux = cmd.getOptionValue("a")) != null) {
             algorithmName = aux;

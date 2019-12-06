@@ -16,9 +16,19 @@
  */
 package br.ufpr.inf.cbio.hhcoanalysis.runner;
 
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.BaselineConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
 import br.ufpr.inf.cbio.hhco.config.AlgorithmConfigurationFactory;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCORandom.HHCORandomConfiguration;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.ArgMaxSelection;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.CastroRoulette;
+import br.ufpr.inf.cbio.hhco.metrics.fir.EpsilonFIR;
+import br.ufpr.inf.cbio.hhco.metrics.fir.R2TchebycheffFIR;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvalSelected;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluateAll;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluationStrategy;
+import org.uma.jmetal.problem.Problem;
 
 /**
  *
@@ -26,17 +36,32 @@ import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCORandom.HHCORandomConfiguration;
  */
 public class HHCOFactory extends AlgorithmConfigurationFactory {
 
+    private final Problem problem;
+    private final int populationSize;
+
+    public HHCOFactory(Problem problem, int populationSize) {
+        this.problem = problem;
+        this.populationSize = populationSize;
+    }
+
     @Override
     public AlgorithmConfiguration getAlgorithmConfiguration(String algorithm) {
+        EvaluationStrategy evaluationStrategy;
         switch (algorithm) {
             case "HHCORandom":
                 return new HHCORandomConfiguration();
             case "HHCOEpsilon":
-                return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.EPSILON, GenericHHCOConfiguration.SelectionMethod.GREEDY);
+                evaluationStrategy = new EvaluateAll(new ArgMaxSelection(), new EpsilonFIR(problem));
+                return new BaselineConfiguration(algorithm, evaluationStrategy);
             case "Roulette":
-                return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.R2, GenericHHCOConfiguration.SelectionMethod.ROULETTE);
+                evaluationStrategy = new EvaluateAll(new CastroRoulette(), new R2TchebycheffFIR(problem, populationSize));
+                return new BaselineConfiguration(algorithm, evaluationStrategy);
+            case "EvalSelected":
+                evaluationStrategy = new EvalSelected(new CastroRoulette(), new R2TchebycheffFIR(problem, populationSize));
+                return new BaselineConfiguration(algorithm, evaluationStrategy);
             default:
-                return new GenericHHCOConfiguration(algorithm, GenericHHCOConfiguration.FIRType.R2, GenericHHCOConfiguration.SelectionMethod.GREEDY);
+                evaluationStrategy = new EvaluateAll(new ArgMaxSelection(), new R2TchebycheffFIR(problem, populationSize));
+                return new BaselineConfiguration(algorithm, evaluationStrategy);
         }
     }
 }

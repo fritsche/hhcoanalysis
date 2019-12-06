@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.ufpr.inf.cbio.hhcoanalysis.runner;
+package br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline;
 
 import br.ufpr.inf.cbio.hhco.algorithm.HypE.COHypEConfiguration;
 import br.ufpr.inf.cbio.hhco.algorithm.MOEAD.COMOEADConfiguration;
@@ -25,53 +25,45 @@ import br.ufpr.inf.cbio.hhco.algorithm.NSGAIII.CONSGAIIIConfiguration;
 import br.ufpr.inf.cbio.hhco.algorithm.SPEA2.COSPEA2Configuration;
 import br.ufpr.inf.cbio.hhco.algorithm.SPEA2SDE.COSPEA2SDEConfiguration;
 import br.ufpr.inf.cbio.hhco.algorithm.ThetaDEA.COThetaDEAConfiguration;
-import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCO;
-import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCOBuilder;
-import br.ufpr.inf.cbio.hhco.hyperheuristic.HHCO.HHCOConfiguration;
+import br.ufpr.inf.cbio.hhco.config.AlgorithmConfiguration;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.CooperativeAlgorithm;
 import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.ArgMaxSelection;
-import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.CastroRoulette;
+import br.ufpr.inf.cbio.hhco.hyperheuristic.selection.SelectionFunction;
 import br.ufpr.inf.cbio.hhco.metrics.fir.EpsilonFIR;
+import br.ufpr.inf.cbio.hhco.metrics.fir.FitnessImprovementRateCalculator;
 import br.ufpr.inf.cbio.hhco.metrics.fir.R2TchebycheffFIR;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluateAll;
+import br.ufpr.inf.cbio.hhcoanalysis.hyperheuristic.baseline.evaluation.EvaluationStrategy;
 import java.util.logging.Level;
 import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalLogger;
 
 /**
  *
  * @author Gian Fritsche <gmfritsche at inf.ufpr.br>
  */
-public class GenericHHCOConfiguration extends HHCOConfiguration<Solution> {
+public class BaselineConfiguration implements AlgorithmConfiguration<Baseline> {
 
-    public enum FIRType {
-        R2, EPSILON
-    };
-    private FIRType firtype;
+    protected final String name;
+    protected SelectionFunction<CooperativeAlgorithm> selection;
+    protected Problem problem;
+    protected int popSize;
+    protected EvaluationStrategy evaluationStrategy;
 
-    public enum SelectionMethod {
-        ROULETTE, GREEDY
-    };
-    private SelectionMethod selectionMethod;
-
-    public GenericHHCOConfiguration(String name) {
-        this(name, FIRType.R2, SelectionMethod.GREEDY);
-    }
-
-    public GenericHHCOConfiguration(String name, FIRType firtype, SelectionMethod selectionMethod) {
-        super(name);
-        this.firtype = firtype;
-        this.selectionMethod = selectionMethod;
+    public BaselineConfiguration(String name, EvaluationStrategy evaluationStrategy) {
+        this.name = name;
+        this.evaluationStrategy = evaluationStrategy;
     }
 
     @Override
-    public HHCO configure(int popSize, int maxFitnessEvaluations, Problem problem) {
+    public Baseline configure(int popSize, int maxFitnessEvaluations, Problem problem) {
 
         this.problem = problem;
         this.popSize = popSize;
 
         setup();
 
-        HHCOBuilder builder = new HHCOBuilder(problem);
+        BaselineBuilder builder = new BaselineBuilder(problem);
 
         switch (name) {
             case "CONSGAII":
@@ -114,29 +106,12 @@ public class GenericHHCOConfiguration extends HHCOConfiguration<Solution> {
                         .addAlgorithm(new COHypEConfiguration().configure(popSize, maxFitnessEvaluations, problem));
         }
 
-        return builder.setName(name).setSelection(selection).setFir(fir)
+        return builder.setName(name).setEvaluationStrategy(evaluationStrategy)
                 .setMaxEvaluations(maxFitnessEvaluations).setPopulationSize(popSize).build();
     }
 
     @Override
     public void setup() {
-
-        if (selectionMethod.equals(SelectionMethod.ROULETTE)) {
-            this.selection = new CastroRoulette<>();
-        } else {
-            this.selection = new ArgMaxSelection<>();
-        }
-        JMetalLogger.logger.log(Level.CONFIG, "Selection: {0}", selection.getClass().getSimpleName());
-
-        switch (firtype) {
-            case R2:
-                this.fir = new R2TchebycheffFIR(problem, popSize);
-                break;
-            case EPSILON:
-                this.fir = new EpsilonFIR(problem);
-                break;
-        }
-        JMetalLogger.logger.log(Level.CONFIG, "FIR: {0}", fir.getClass().getSimpleName());
 
     }
 

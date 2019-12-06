@@ -82,24 +82,7 @@ public class Baseline<S extends Solution<?>> extends Observable implements Algor
             // apply selected heuristic
             selected.doIteration();
 
-            // copy the solutions generatedy by selected
-            List<S> offspring = new ArrayList<>();
-            for (S s : selected.getOffspring()) {
-                offspring.add((S) s.copy());
-                // count evaluations used by selected
-                setEvaluations(getEvaluations() + 1);
-            }
-
-            // cooperation phase
-            for (CooperativeAlgorithm<S> neighbor : getAlgorithms()) {
-                if (neighbor != selected) {
-                    List<S> migrants = new ArrayList<>();
-                    for (S s : offspring) {
-                        migrants.add((S) s.copy());
-                    }
-                    neighbor.receive(migrants);
-                }
-            }
+            migrationStrategy.migrate(this);
 
             // credit assignment
             evaluationStrategy.creditAssignment(this);

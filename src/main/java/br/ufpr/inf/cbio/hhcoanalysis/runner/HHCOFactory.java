@@ -57,7 +57,7 @@ public class HHCOFactory extends AlgorithmConfigurationFactory {
                 evaluationStrategy = new EvaluateAll(new CastroRoulette(), new R2TchebycheffFIR(problem, populationSize));
                 return new BaselineConfiguration(algorithm, evaluationStrategy);
             case "EvalSelected":
-                evaluationStrategy = new EvalSelected(new CastroRoulette(), new R2TchebycheffFIR(problem, populationSize));
+                evaluationStrategy = new EvalSelected(new ArgMaxSelection(), new R2TchebycheffFIR(problem, populationSize));
                 return new BaselineConfiguration(algorithm, evaluationStrategy);
             default:
                 evaluationStrategy = new EvaluateAll(new ArgMaxSelection(), new R2TchebycheffFIR(problem, populationSize));

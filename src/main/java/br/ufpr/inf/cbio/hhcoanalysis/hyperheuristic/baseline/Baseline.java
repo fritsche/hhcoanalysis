@@ -50,6 +50,8 @@ public class Baseline<S extends Solution<?>> extends Observable implements Algor
         this.populationSize = populationSize;
         this.maxEvaluations = maxEvaluations;
         this.evaluationStrategy = evaluationStrategy;
+        JMetalLogger.logger.log(Level.CONFIG, "Selection Function: {0}", evaluationStrategy.getSelection().getClass().getSimpleName());
+        JMetalLogger.logger.log(Level.CONFIG, "Evaluation Strategy: {0}", evaluationStrategy.getClass().getSimpleName());
     }
 
     @Override
